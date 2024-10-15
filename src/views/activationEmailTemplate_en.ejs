@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Activate Account</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        color: #333;
+        line-height: 1.6;
+      }
+      h2 {
+        color: #28a745;
+      }
+      .button {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #ffffff;
+        background-color: #28a745;
+        text-decoration: none;
+        border-radius: 5px;
+        text-align: center;
+        margin: 20px 0;
+      }
+      .ltr {
+        direction: ltr;
+        text-align: left;
+      }
+      .rtl {
+        direction: rtl;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h2>Hello <%= name %>,</h2>
+      <p>Thank you for registering. Please click the following link to activate your account.</p>
+      <p style="text-align: center">
+        <a
+          href="<%= frontendUrl %>/activate/<%= token %>"
+          class="button"
+          style="
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #ffffff;
+            background-color: #28a745;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+          "
+        >
+          Activate Account
+        </a>
+      </p>
+      <p>If you did not request this, please ignore this email.</p>
+      <p>
+        Best regards,<br />
+        Digital Tests
+      </p>
+    </div>
+  </body>
+</html>

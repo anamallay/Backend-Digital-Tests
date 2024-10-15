@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إعادة تعيين كلمة المرور</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        color: #333;
+        line-height: 1.6;
+      }
+      h2 {
+        color: #28a745;
+      }
+      .button {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #ffffff;
+        background-color: #28a745;
+        text-decoration: none;
+        border-radius: 5px;
+        text-align: center;
+        margin: 20px 0;
+      }
+      .rtl {
+        direction: rtl;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="rtl">
+      <h2>مرحبًا <%= name %>,</h2>
+      <p>
+        لقد طلبت إعادة تعيين كلمة المرور الخاصة بك. الرجاء النقر على الرابط التالي لإعادة تعيين كلمة
+        المرور:
+      </p>
+      <p style="text-align: center">
+        <a
+          href="<%= frontendUrl %>/resetpassword/<%= token %>"
+          style="
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #ffffff;
+            background-color: #28a745;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            margin: 20px 0;
+          "
+        >
+          إعادة تعيين كلمة المرور
+        </a>
+      </p>
+      <p>إذا لم تطلب هذا، يرجى تجاهل هذا البريد الإلكتروني.</p>
+      <p>أطيب التحيات،<br />الاختبارات الرقمية</p>
+    </div>
+  </body>
+</html>
