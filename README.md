@@ -8,7 +8,7 @@ The backend for **Digital Tests**, a web application for creating, sharing, and 
 - [Getting Started](#getting-started)
 - [API Documentation](#api-documentation)
 - [Environment Variables](#environment-variables)
-- [Localization ](#localization)
+- [Localization](#localization)
 - [Technologies Used](#technologies-used)
 - [License](#license)
 
@@ -19,6 +19,7 @@ The backend for **Digital Tests**, a web application for creating, sharing, and 
 - **Quiz Types**: Create public or private quizzes.
 - **Result Tracking**: Store quiz results, display correct answers, and calculate scores.
 - **Internationalization**: Supports English and Arabic languages.
+- **Localization**: Automatically adjusts text direction (LTR for English, RTL for Arabic).
 - **Email Notifications**: Sends account activation, password reset, and account deletion emails.
 
 ## Getting Started
@@ -317,8 +318,8 @@ Replace each `<value>` with your actual configuration values:
 
 The project uses **i18next** to support multiple languages. Currently, the supported languages are:
 
-- **English (en)**
-- **Arabic (ar)**
+- **English (en)**: Left-to-right text direction.
+- **Arabic (ar)**: Right-to-left text direction.
 
 Translation files are located in the `src/locales/` directory.
 
