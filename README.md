@@ -8,6 +8,7 @@ The backend for **Digital Tests**, a web application for creating, sharing, and 
 - [Getting Started](#getting-started)
 - [API Documentation](#api-documentation)
 - [Environment Variables](#environment-variables)
+- [Localization ](#localization)
 - [Technologies Used](#technologies-used)
 - [License](#license)
 
@@ -311,6 +312,15 @@ Replace each `<value>` with your actual configuration values:
 - **SMTP_PASSWORD**: The password for your SMTP server.
 - **JWT_QUIZ_SECRET_KEY**: The secret key for signing quiz-related tokens.
 - **FRONTEND_URL**: The URL of your frontend application (e.g., http://localhost:5173 for local development).
+
+## Localization
+
+The project uses **i18next** to support multiple languages. Currently, the supported languages are:
+
+- **English (en)**
+- **Arabic (ar)**
+
+Translation files are located in the `src/locales/` directory.
 
 ## Technologies Used
 
