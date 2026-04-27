@@ -119,6 +119,7 @@ export const getSingleScore = async (req: CustomRequest, res: Response, next: Ne
         model: 'Question',
         select: 'question options correctOption',
       })
+      .lean()
 
     if (!score) {
       return handleResponse(res, 404, req.t('Score.score_not_found'))
@@ -161,6 +162,7 @@ export const getAllScores = async (req: CustomRequest, res: Response, next: Next
         model: 'Question',
         select: 'question options correctOption',
       })
+      .lean()
 
     return handleResponse(
       res,
@@ -251,6 +253,7 @@ export const getQuizScores = async (req: CustomRequest, res: Response, next: Nex
         select: 'question options correctOption',
       })
       .populate('user', 'username email')
+      .lean()
 
     return handleResponse(
       res,

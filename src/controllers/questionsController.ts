@@ -15,7 +15,7 @@ export const getQuestionsByQuizId = async (req: Request, res: Response, next: Ne
       throw createHttpError(400, req.t('Question.quiz_id_required'))
     }
 
-    const quiz = await QuizModel.findById(quizId).populate('questions')
+    const quiz = await QuizModel.findById(quizId).populate('questions').lean()
 
     if (!quiz) {
       return handleResponse(res, 404, req.t('Question.quiz_not_found'))
@@ -34,12 +34,10 @@ export const getQuestionsByQuizId = async (req: Request, res: Response, next: Ne
 // Add Question to Quiz
 export const addQuestionToQuiz = async (req: CustomRequest, res: Response, next: NextFunction) => {
   try {
+    // Body shape (quizId / question / options / correctOption) is validated
+    // in `addQuestionValidation` + `runValidation` upstream.
     const { quizId, question, options, correctOption } = req.body
     const userId = req.userId
-
-    if (!quizId || !question || !options || correctOption === undefined) {
-      throw createHttpError(400, req.t('Question.required_fields_missing'))
-    }
 
     const quiz = await QuizModel.findById(quizId)
     if (!quiz) {

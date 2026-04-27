@@ -22,7 +22,9 @@ const populateLibraryConfig = {
 // After a library write, refetch the user with the canonical populate so
 // the response carries the same shape `getUserLibrary` would return.
 async function fetchPopulatedLibrary(userId: mongoose.Types.ObjectId | string) {
-  const user = await UserModel.findById(userId).populate(populateLibraryConfig)
+  const user = await UserModel.findById(userId)
+    .populate(populateLibraryConfig)
+    .lean()
   return user?.library ?? []
 }
 
@@ -233,15 +235,17 @@ export const getQuizFromLibrary = async (req: CustomRequest, res: Response, next
       throw createHttpError(400, req.t('Library.invalid_quiz_id_format'))
     }
 
-    const user = await UserModel.findById(userId).populate({
-      path: 'library',
-      match: { _id: quizId },
-      populate: {
-        path: 'questions',
-        model: 'Question',
-        select: 'question options correctOption',
-      },
-    })
+    const user = await UserModel.findById(userId)
+      .populate({
+        path: 'library',
+        match: { _id: quizId },
+        populate: {
+          path: 'questions',
+          model: 'Question',
+          select: 'question options correctOption',
+        },
+      })
+      .lean()
     if (!user) {
       throw createHttpError(404, req.t('Library.user_not_found'))
     }

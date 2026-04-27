@@ -142,6 +142,29 @@
       "invalid_email": "Invalid email address.",
       "password_missing": "Password is required.",
       "password_length": "Password must be at least 6 characters and no more than 50 characters."
+    },
+    "QuizValidation": {
+      "title_required": "Quiz title is required.",
+      "title_length": "Quiz title must be between 3 and 100 characters.",
+      "description_required": "Quiz description is required.",
+      "description_length": "Quiz description must be between 10 and 1000 characters.",
+      "time_required": "Quiz duration is required.",
+      "time_range": "Quiz duration must be an integer between 1 and 600 minutes.",
+      "invalid_visibility": "Visibility must be either 'public' or 'private'.",
+      "questions_must_be_array": "Questions must be an array.",
+      "questions_must_be_objectids": "Questions list may only contain valid IDs."
+    },
+    "QuestionValidation": {
+      "quiz_id_required": "Quiz ID is required.",
+      "invalid_quiz_id": "Quiz ID is not valid.",
+      "question_required": "Question text is required.",
+      "question_length": "Question text must be between 5 and 500 characters.",
+      "options_required": "Answer options are required.",
+      "options_count": "A question must have between 2 and 6 options.",
+      "option_text_required": "Each option must have text.",
+      "correct_option_required": "Correct option must be specified.",
+      "correct_option_must_be_integer": "Correct option must be an integer.",
+      "correct_option_out_of_range": "Correct option must be within the available options range."
     }
   },
   "Errors": {

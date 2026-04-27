@@ -142,6 +142,29 @@
       "invalid_email": "البريد الإلكتروني غير صحيح.",
       "password_missing": "كلمة المرور مفقودة.",
       "password_length": "يجب أن تحتوي كلمة المرور على 6 أحرف على الأقل ولا تزيد عن 50 حرف."
+    },
+    "QuizValidation": {
+      "title_required": "عنوان الاختبار مطلوب.",
+      "title_length": "يجب أن يكون عنوان الاختبار بين 3 و 100 حرفاً.",
+      "description_required": "وصف الاختبار مطلوب.",
+      "description_length": "يجب أن يكون وصف الاختبار بين 10 و 1000 حرفاً.",
+      "time_required": "مدة الاختبار مطلوبة.",
+      "time_range": "يجب أن تكون مدة الاختبار رقماً صحيحاً بين 1 و 600 دقيقة.",
+      "invalid_visibility": "يجب أن تكون قيمة الرؤية إما 'public' أو 'private'.",
+      "questions_must_be_array": "يجب أن تكون قائمة الأسئلة مصفوفة.",
+      "questions_must_be_objectids": "يجب أن تحتوي قائمة الأسئلة على معرفات صالحة فقط."
+    },
+    "QuestionValidation": {
+      "quiz_id_required": "معرف الاختبار مطلوب.",
+      "invalid_quiz_id": "معرف الاختبار غير صالح.",
+      "question_required": "نص السؤال مطلوب.",
+      "question_length": "يجب أن يكون نص السؤال بين 5 و 500 حرفاً.",
+      "options_required": "خيارات الإجابة مطلوبة.",
+      "options_count": "يجب أن يحتوي السؤال على عدد بين 2 و 6 خيارات.",
+      "option_text_required": "يجب أن يحتوي كل خيار على نص.",
+      "correct_option_required": "تحديد الخيار الصحيح مطلوب.",
+      "correct_option_must_be_integer": "يجب أن يكون الخيار الصحيح رقماً صحيحاً.",
+      "correct_option_out_of_range": "يجب أن يكون الخيار الصحيح ضمن نطاق الخيارات المتاحة."
     }
   },
   "Errors": {

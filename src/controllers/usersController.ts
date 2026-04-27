@@ -308,7 +308,7 @@ export const deleteAccount = async (req: CustomRequest, res: Response, next: Nex
   try {
     const userId = req.userId
 
-    const userQuizzes = await quizSchema.find({ user: userId })
+    const userQuizzes = await quizSchema.find({ user: userId }).select('_id').lean()
     const quizIds = userQuizzes.map((quiz) => quiz._id)
 
     await questionSchema.deleteMany({ quiz: { $in: quizIds } })
@@ -357,7 +357,7 @@ export const deleteAccount = async (req: CustomRequest, res: Response, next: Nex
 // List Public Users
 export const listPublicUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const users = await userSchema.find()
+    const users = await userSchema.find().lean()
     // One aggregation gives the per-author public-quiz count, so the list
     // endpoint stays O(1) DB calls regardless of user count.
     const counts = await quizSchema.aggregate<{ _id: mongoose.Types.ObjectId; count: number }>([
@@ -399,6 +399,7 @@ export const getPublicUserById = async (req: Request, res: Response, next: NextF
       .find({ user: id, visibility: 'public' })
       .populate('questions')
       .populate('user', 'name username')
+      .lean()
     const publicUser = {
       _id: user._id,
       name: user.name,

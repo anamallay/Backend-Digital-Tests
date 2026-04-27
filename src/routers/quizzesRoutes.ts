@@ -17,15 +17,20 @@ import {
   shareQuizWithUser,
 } from '../controllers/librariesController'
 import { handleResponse } from '../utils/responseHandlers'
+import {
+  createQuizValidation,
+  updateQuizValidation,
+} from '../validation/quizzesValidation'
+import { runValidation } from '../validation/runValidation'
 
 const router: Router = Router()
 router.get('/library', requireAuth, getUserLibrary)
 
-router.post('/create', requireAuth, createQuiz)
+router.post('/create', requireAuth, createQuizValidation, runValidation, createQuiz)
 router.get('/public', getQuizzes)
 router.get('/userQuiz', requireAuth, getUserQuizzes)
 router.get('/:id', requireAuth, getQuizById)
-router.put('/:id', requireAuth, updateQuiz)
+router.put('/:id', requireAuth, updateQuizValidation, runValidation, updateQuiz)
 router.delete('/:id', requireAuth, deleteQuiz)
 
 router.get('/library/:quizId', requireAuth, getQuizFromLibrary)

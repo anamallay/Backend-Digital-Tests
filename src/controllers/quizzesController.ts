@@ -11,24 +11,11 @@ import mongoose from 'mongoose'
 // Create Quiz
 export const createQuiz = async (req: CustomRequest, res: Response, next: NextFunction) => {
   try {
+    // Field-shape validation runs in `createQuizValidation` + `runValidation`
+    // before this handler — by the time we get here, title/description/time
+    // are present and well-formed; visibility is either valid or absent.
     const { title, description, time, visibility = 'private' } = req.body
     const userId = req.userId
-
-    if (!title) {
-      throw createHttpError(400, req.t('Quiz.title_required'))
-    }
-
-    if (!description) {
-      throw createHttpError(400, req.t('Quiz.description_required'))
-    }
-
-    if (!time || typeof time !== 'number' || time <= 0) {
-      throw createHttpError(400, req.t('Quiz.time_required'))
-    }
-
-    if (visibility !== 'public' && visibility !== 'private') {
-      throw createHttpError(400, req.t('Quiz.invalid_visibility'))
-    }
 
     const newQuiz = new QuizModel({
       title,
@@ -75,6 +62,7 @@ export const getQuizzes = async (req: Request, res: Response, next: NextFunction
       .populate('user', 'name username email')
       .skip(skip)
       .limit(limit)
+      .lean()
 
     const totalQuizzes = await QuizModel.countDocuments({ visibility: 'public' })
     const totalPages = Math.ceil(totalQuizzes / limit)
@@ -143,6 +131,7 @@ export const getUserQuizzes = async (req: CustomRequest, res: Response, next: Ne
     const userQuizzes = await QuizModel.find({ user: userId })
       .populate('questions')
       .populate('user', 'name username email')
+      .lean()
 
     handleResponse(res, 200, req.t('Quiz.user_quizzes_retrieved_successfully'), userQuizzes)
   } catch (error) {
