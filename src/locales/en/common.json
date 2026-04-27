@@ -112,9 +112,7 @@
     "not_authorized_to_update": "You are not authorized to update this quiz.",
     "quiz_updated_successfully": "Quiz updated successfully.",
     "not_authorized_to_delete": "You are not authorized to delete this quiz.",
-    "quiz_deleted_successfully": "Quiz and all associated scores deleted successfully.",
-    "not_authorized_to_toggle_visibility": "You are not authorized to change the visibility of this quiz.",
-    "visibility_toggled_successfully": "Quiz visibility toggled successfully."
+    "quiz_deleted_successfully": "Quiz and all associated scores deleted successfully."
   },
   "Score": {
     "not_logged_in": "User is not logged in.",
@@ -145,6 +143,7 @@
     "invalid_id": "Invalid ID format.",
     "validation_failed": "Validation failed.",
     "duplicate_value": "{{field}} '{{value}}' is already in use.",
-    "payload_too_large": "Request body is too large. The maximum allowed size is 100 KB."
+    "payload_too_large": "Request body is too large. The maximum allowed size is 100 KB.",
+    "route_not_found": "Route not found."
   }
 }

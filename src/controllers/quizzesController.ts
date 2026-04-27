@@ -62,8 +62,11 @@ export const createQuiz = async (req: CustomRequest, res: Response, next: NextFu
 // Get All Public Quizzes
 export const getQuizzes = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const page = parseInt(req.query.page as string) || 1
-    const limit = parseInt(req.query.limit as string) || 10
+    // Clamp to defend against negative/zero/huge pagination params.
+    // page floors at 1; limit is bounded to [1, 100] so a malicious or
+    // mistaken `?limit=99999` can't force a full-collection scan.
+    const page = Math.max(1, parseInt(req.query.page as string) || 1)
+    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit as string) || 10))
 
     const skip = (page - 1) * limit
 
@@ -214,42 +217,6 @@ export const deleteQuiz = async (req: CustomRequest, res: Response, next: NextFu
     )
 
     handleResponse(res, 200, req.t('Quiz.quiz_deleted_successfully'))
-  } catch (error) {
-    next(error)
-  }
-}
-
-// Toggle Quiz Visibility
-export const toggleQuizVisibility = async (
-  req: CustomRequest,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const quizId = req.params.id
-    const userId = req.userId
-
-    if (!mongoose.Types.ObjectId.isValid(quizId)) {
-      throw createHttpError(400, req.t('Quiz.invalid_quiz_id'))
-    }
-
-    const quiz = await QuizModel.findById(quizId)
-
-    if (!quiz) {
-      return handleResponse(res, 404, req.t('Quiz.quiz_not_found'))
-    }
-
-    if (quiz.user.toString() !== userId) {
-      return handleResponse(res, 403, req.t('Quiz.not_authorized_to_toggle_visibility'))
-    }
-
-    quiz.visibility = quiz.visibility === 'private' ? 'public' : 'private'
-
-    await quiz.save()
-
-    handleResponse(res, 200, req.t('Quiz.visibility_toggled_successfully'), {
-      visibility: quiz.visibility,
-    })
   } catch (error) {
     next(error)
   }

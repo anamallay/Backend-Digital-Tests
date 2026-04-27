@@ -22,7 +22,7 @@ export const getQuestionsByQuizId = async (req: Request, res: Response, next: Ne
     }
 
     if (!quiz.questions || quiz.questions.length === 0) {
-      return handleResponse(res, 201, req.t('Question.no_questions_found'))
+      return handleResponse(res, 200, req.t('Question.no_questions_found'))
     }
 
     handleResponse(res, 200, req.t('Question.questions_found'), quiz.questions)

@@ -13,6 +13,7 @@ import { clearPreviousLoginCookie, isLoggedOut, requireAuth } from '../middlewar
 import { registerValidation, updateValidation } from '../validation/usersValidation'
 import { runValidation } from '../validation/runValidation'
 import { registerLimiter, resendActivationLimiter } from '../middleware/rateLimiters'
+import { handleResponse } from '../utils/responseHandlers'
 
 const router = Router()
 
@@ -36,7 +37,7 @@ router.put('/update-user', requireAuth, updateValidation, runValidation, updateU
 router.delete('/delete-account', requireAuth, deleteAccount)
 
 router.get('*', (req, res) => {
-  return res.status(404).send('No users routes found!')
+  return handleResponse(res, 404, req.t('Errors.route_not_found'))
 })
 
 export default router

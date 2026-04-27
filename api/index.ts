@@ -46,6 +46,18 @@ app.use(express.urlencoded({ extended: false, limit: '100kb' }))
 app.use(morgan(dev.app.isProd ? 'combined' : 'dev'))
 app.use(cookieParser())
 
+// Health probe. Public + i18n-bypassed: load balancers / Vercel /
+// uptime monitors hit this without auth or Accept-Language. Mounted
+// before the routers so the `/api/*` catch-alls can't shadow it.
+app.get('/api/health', (_req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    mongo: mongoose.connection.readyState === 1,
+    uptime: process.uptime(),
+    version: process.env.npm_package_version || 'unknown',
+  })
+})
+
 // Define routes
 app.use('/api/users', usersRouter)
 app.use('/api/auths', authsRouter)

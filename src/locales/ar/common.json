@@ -112,9 +112,7 @@
     "not_authorized_to_update": "ليس لديك إذن لتحديث هذا الاختبار.",
     "quiz_updated_successfully": "تم تحديث الاختبار بنجاح.",
     "not_authorized_to_delete": "ليس لديك إذن لحذف هذا الاختبار.",
-    "quiz_deleted_successfully": "تم حذف الاختبار وجميع الدرجات المرتبطة به بنجاح.",
-    "not_authorized_to_toggle_visibility": "ليس لديك إذن لتغيير رؤية هذا الاختبار.",
-    "visibility_toggled_successfully": "تم تغيير رؤية الاختبار بنجاح."
+    "quiz_deleted_successfully": "تم حذف الاختبار وجميع الدرجات المرتبطة به بنجاح."
   },
   "Score": {
     "not_logged_in": "المستخدم غير مسجل الدخول.",
@@ -145,6 +143,7 @@
     "invalid_id": "تنسيق المعرف غير صالح.",
     "validation_failed": "فشل التحقق من البيانات.",
     "duplicate_value": "{{field}} '{{value}}' مستخدم بالفعل.",
-    "payload_too_large": "حجم الطلب كبير جدًا. الحد الأقصى المسموح به هو 100 كيلوبايت."
+    "payload_too_large": "حجم الطلب كبير جدًا. الحد الأقصى المسموح به هو 100 كيلوبايت.",
+    "route_not_found": "المسار غير موجود."
   }
 }

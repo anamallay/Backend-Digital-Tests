@@ -7,6 +7,7 @@ import {
   submitQuiz,
 } from '../controllers/scoresController'
 import { requireAuth } from '../middleware/auth'
+import { handleResponse } from '../utils/responseHandlers'
 
 const router: Router = Router()
 router.get('/examiner', requireAuth, getQuizScores)
@@ -16,6 +17,6 @@ router.post('/submit', requireAuth, submitQuiz)
 router.delete('/delete-score', requireAuth, deleteScore)
 
 router.get('*', (req, res) => {
-  return res.status(404).send('No score routes found!')
+  return handleResponse(res, 404, req.t('Errors.route_not_found'))
 })
 export default router

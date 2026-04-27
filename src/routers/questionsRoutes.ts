@@ -7,6 +7,7 @@ import {
   updateQuestionInQuiz,
 } from '../controllers/questionsController'
 import { requireAuth } from '../middleware/auth'
+import { handleResponse } from '../utils/responseHandlers'
 
 const router: Router = Router()
 
@@ -16,7 +17,7 @@ router.put('/:questionId', requireAuth, updateQuestionInQuiz)
 router.get('/question/:questionId', requireAuth, getQuestionById)
 router.get('/quiz/:quizId', requireAuth, getQuestionsByQuizId)
 router.get('*', (req, res) => {
-  return res.status(404).send('No questions routes found!')
+  return handleResponse(res, 404, req.t('Errors.route_not_found'))
 })
 
 export default router
