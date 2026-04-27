@@ -8,6 +8,23 @@ import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
 import { dev } from '../config'
 
+// Shared populate config for the user's library. Every endpoint that
+// returns a library array must use this so the frontend slice never
+// sees an under-populated payload (e.g. ObjectId-only refs vs full
+// QuizType objects). `getUserLibrary` plus all 4 mutations route
+// through this.
+const populateLibraryConfig = {
+  path: 'library',
+  populate: [{ path: 'user', select: 'name email' }],
+}
+
+// After a library write, refetch the user with the canonical populate so
+// the response carries the same shape `getUserLibrary` would return.
+async function fetchPopulatedLibrary(userId: mongoose.Types.ObjectId | string) {
+  const user = await UserModel.findById(userId).populate(populateLibraryConfig)
+  return user?.library ?? []
+}
+
 // Get User Library
 export const getUserLibrary = async (req: CustomRequest, res: Response, next: NextFunction) => {
   try {
@@ -21,10 +38,7 @@ export const getUserLibrary = async (req: CustomRequest, res: Response, next: Ne
       throw createHttpError(400, req.t('Library.invalid_user_id_format'))
     }
 
-    const user = await UserModel.findById(userId).populate({
-      path: 'library',
-      populate: [{ path: 'user', select: 'name email' }],
-    })
+    const user = await UserModel.findById(userId).populate(populateLibraryConfig)
 
     if (!user) {
       throw createHttpError(404, req.t('Library.user_not_found'))
@@ -51,7 +65,7 @@ export const removeQuizFromLibrary = async (
     const user = await UserModel.findById(userId)
 
     if (!user) {
-      return res.status(404).json({ message: req.t('Library.user_not_found') })
+      return handleResponse(res, 404, req.t('Library.user_not_found'))
     }
 
     user.library = user.library ?? []
@@ -59,15 +73,19 @@ export const removeQuizFromLibrary = async (
     const updatedLibrary = user.library.filter((userQuiz) => userQuiz.toString() !== quizId)
 
     if (updatedLibrary.length === user.library.length) {
-      return res.status(404).json({ message: req.t('Library.quiz_not_found_in_library') })
+      return handleResponse(res, 404, req.t('Library.quiz_not_found_in_library'))
     }
 
     user.library = updatedLibrary
     await user.save()
 
-    return res
-      .status(200)
-      .json({ message: req.t('Library.quiz_removed_successfully'), library: user.library })
+    const populatedLibrary = await fetchPopulatedLibrary(userId!)
+    return handleResponse(
+      res,
+      200,
+      req.t('Library.quiz_removed_successfully'),
+      populatedLibrary
+    )
   } catch (error) {
     next(error)
   }
@@ -136,7 +154,13 @@ export const addQuizToLibraryUsingToken = async (
       return handleResponse(res, 400, req.t('Library.quiz_already_in_library'))
     }
 
-    handleResponse(res, 200, req.t('Library.quiz_added_successfully'))
+    const populatedLibrary = await fetchPopulatedLibrary(currentUserId!)
+    handleResponse(
+      res,
+      200,
+      req.t('Library.quiz_added_successfully'),
+      populatedLibrary
+    )
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {
       return handleResponse(res, 401, req.t('Library.invalid_or_expired_token'))
@@ -179,9 +203,13 @@ export const addPublicQuizToLibrary = async (
       return handleResponse(res, 400, req.t('Library.quiz_already_in_library'))
     }
 
-    const quizLink = `${dev.app.frontendUrl}/public-quiz/${quizId}`
-
-    handleResponse(res, 200, req.t('Library.public_quiz_added_successfully'), { quizLink })
+    const populatedLibrary = await fetchPopulatedLibrary(userId!)
+    handleResponse(
+      res,
+      200,
+      req.t('Library.public_quiz_added_successfully'),
+      populatedLibrary
+    )
   } catch (error) {
     next(error)
   }
@@ -217,10 +245,10 @@ export const getQuizFromLibrary = async (req: CustomRequest, res: Response, next
     const quiz = (user.library ?? []).find((quiz) => quiz._id.toString() === quizId)
 
     if (!quiz) {
-      return res.status(404).json({ message: req.t('Library.quiz_not_found_in_library') })
+      return handleResponse(res, 404, req.t('Library.quiz_not_found_in_library'))
     }
 
-    return res.status(200).json({ message: req.t('Library.quiz_retrieved_successfully'), quiz })
+    return handleResponse(res, 200, req.t('Library.quiz_retrieved_successfully'), quiz)
   } catch (error) {
     next(error)
   }

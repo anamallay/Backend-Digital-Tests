@@ -36,4 +36,10 @@ const quizSchema = new Schema<IQuiz>(
   { timestamps: true }
 )
 
+// Hot-path support:
+//   { user: 1 }       — getUserQuizzes, deleteAccount cascade, aggregate $match by author
+//   { visibility: 1 } — getQuizzes (public list), listPublicUsers aggregate
+quizSchema.index({ user: 1 })
+quizSchema.index({ visibility: 1 })
+
 export default mongoose.model<IQuiz>('Quiz', quizSchema)

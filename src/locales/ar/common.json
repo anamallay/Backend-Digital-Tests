@@ -23,7 +23,9 @@
     "account_activation_success_subject": "تم تفعيل حسابك بنجاح!",
 
     "goodbye_subject": "وداعًا من فريق الاختبارات الرقمية",
-    "goodbye_message": "نأسف لرؤيتك ترحل، ولكن نتمنى لك كل التوفيق في المستقبل. إذا قررت العودة، نحن هنا دائمًا!"
+    "goodbye_message": "نأسف لرؤيتك ترحل، ولكن نتمنى لك كل التوفيق في المستقبل. إذا قررت العودة، نحن هنا دائمًا!",
+    "public_users_retrieved_successfully": "تم استرجاع المستخدمين العامين بنجاح.",
+    "public_user_retrieved_successfully": "تم استرجاع المستخدم العام بنجاح."
   },
   "Auth": {
     "login_success": "تم تسجيل الدخول بنجاح.",
@@ -125,7 +127,9 @@
     "no_scores_found": "لم يتم العثور على نتائج لهذا المستخدم.",
     "server_error": "خطأ في الخادم.",
     "only_quiz_owner_can_delete": "فقط مالك الاختبار يمكنه حذف النتيجة.",
-    "score_deleted_successfully": "تم حذف النتيجة بنجاح."
+    "score_deleted_successfully": "تم حذف النتيجة بنجاح.",
+    "score_retrieved_successfully": "تم استرجاع النتيجة بنجاح.",
+    "scores_retrieved_successfully": "تم استرجاع النتائج بنجاح."
   },
   "Validation": {
     "RegisterValidation": {

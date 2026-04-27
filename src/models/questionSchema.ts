@@ -36,4 +36,8 @@ const questionSchema = new Schema<IQuestion>(
   { timestamps: true }
 )
 
+// Hot-path support:
+//   { quiz: 1 } — deleteMany({ quiz }) cascade in deleteQuiz / deleteAccount
+questionSchema.index({ quiz: 1 })
+
 export default mongoose.model<IQuestion>('Question', questionSchema)

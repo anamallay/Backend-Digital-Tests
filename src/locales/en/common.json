@@ -23,7 +23,9 @@
     "account_activation_success_subject": "Your Account Has Been Successfully Activated!",
 
     "goodbye_subject": "Goodbye from Digital Tests Team",
-    "goodbye_message": "We're sorry to see you go, but we wish you all the best in the future. If you ever decide to return, we're always here!"
+    "goodbye_message": "We're sorry to see you go, but we wish you all the best in the future. If you ever decide to return, we're always here!",
+    "public_users_retrieved_successfully": "Public users retrieved successfully.",
+    "public_user_retrieved_successfully": "Public user retrieved successfully."
   },
   "Auth": {
     "login_success": "Successfully logged in.",
@@ -125,7 +127,9 @@
     "no_scores_found": "No scores found for this user.",
     "server_error": "Server error.",
     "only_quiz_owner_can_delete": "Only the owner of the quiz can delete the score.",
-    "score_deleted_successfully": "Score deleted successfully."
+    "score_deleted_successfully": "Score deleted successfully.",
+    "score_retrieved_successfully": "Score retrieved successfully.",
+    "scores_retrieved_successfully": "Scores retrieved successfully."
   },
   "Validation": {
     "RegisterValidation": {

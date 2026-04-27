@@ -3,6 +3,7 @@ import QuizModel from '../models/quizSchema'
 import ScoreModel from '../models/scoreSchema'
 import UserModel from '../models/userSchema'
 import { createHttpError } from '../utils/createHttpError'
+import { handleResponse } from '../utils/responseHandlers'
 import { IQuestion } from '../types/questionsTypes'
 import { CustomRequest } from '../types/usersType'
 import mongoose from 'mongoose'
@@ -75,9 +76,12 @@ export const submitQuiz = async (req: CustomRequest, res: Response, next: NextFu
 
     await newScoreRecord.save()
 
-    return res
-      .status(200)
-      .json({ message: req.t('Score.quiz_submitted_successfully'), score: newScoreRecord })
+    return handleResponse(
+      res,
+      200,
+      req.t('Score.quiz_submitted_successfully'),
+      newScoreRecord
+    )
   } catch (error) {
     next(error)
   }
@@ -109,10 +113,15 @@ export const getSingleScore = async (req: CustomRequest, res: Response, next: Ne
       })
 
     if (!score) {
-      return res.status(404).json({ message: req.t('Score.score_not_found') })
+      return handleResponse(res, 404, req.t('Score.score_not_found'))
     }
 
-    return res.status(200).json({ score })
+    return handleResponse(
+      res,
+      200,
+      req.t('Score.score_retrieved_successfully'),
+      score
+    )
   } catch (error) {
     next(error)
   }
@@ -124,9 +133,12 @@ export const getAllScores = async (req: CustomRequest, res: Response, next: Next
     const userId = req.userId
 
     if (!userId) {
-      return res.status(401).json({ message: req.t('Score.not_logged_in') })
+      throw createHttpError(401, req.t('Score.not_logged_in'))
     }
 
+    // Empty result is a successful query, not a missing resource — return
+    // 200 with an empty array so the frontend renders its "no results"
+    // empty state instead of an error banner.
     const scores = await ScoreModel.find({ user: userId })
       .populate({
         path: 'quiz',
@@ -142,13 +154,14 @@ export const getAllScores = async (req: CustomRequest, res: Response, next: Next
         select: 'question options correctOption',
       })
 
-    if (!scores.length) {
-      return res.status(404).json({ message: req.t('Score.no_scores_found') })
-    }
-
-    return res.status(200).json({ scores })
+    return handleResponse(
+      res,
+      200,
+      req.t('Score.scores_retrieved_successfully'),
+      scores
+    )
   } catch (error) {
-    return res.status(500).json({ message: req.t('Score.server_error') })
+    next(error)
   }
 }
 
@@ -180,7 +193,7 @@ export const deleteScore = async (req: CustomRequest, res: Response, next: NextF
 
     await ScoreModel.deleteOne({ _id: scoreRecord._id })
 
-    return res.status(200).json({ message: req.t('Score.score_deleted_successfully') })
+    return handleResponse(res, 200, req.t('Score.score_deleted_successfully'))
   } catch (error) {
     next(error)
   }
@@ -207,7 +220,12 @@ export const getQuizScores = async (req: CustomRequest, res: Response, next: Nex
     // 200 with an empty array so the frontend renders its "no results"
     // empty state instead of a generic error.
     if (!quizIds.length) {
-      return res.status(200).json({ scores: [] })
+      return handleResponse(
+        res,
+        200,
+        req.t('Score.scores_retrieved_successfully'),
+        []
+      )
     }
 
     const scores = await ScoreModel.find({ quiz: { $in: quizIds } })
@@ -226,7 +244,12 @@ export const getQuizScores = async (req: CustomRequest, res: Response, next: Nex
       })
       .populate('user', 'username email')
 
-    return res.status(200).json({ scores })
+    return handleResponse(
+      res,
+      200,
+      req.t('Score.scores_retrieved_successfully'),
+      scores
+    )
   } catch (error) {
     next(error)
   }

@@ -348,7 +348,7 @@ export const deleteAccount = async (req: CustomRequest, res: Response, next: Nex
       secure: dev.app.isProd,
     })
 
-    return res.status(200).json({ message: req.t('User.account_deleted_successfully') })
+    return handleResponse(res, 200, req.t('User.account_deleted_successfully'))
   } catch (error) {
     next(error)
   }
@@ -373,7 +373,12 @@ export const listPublicUsers = async (req: Request, res: Response, next: NextFun
       quizzes: [],
       publicQuizzesCount: countByUserId.get(String(u._id)) ?? 0,
     }))
-    return res.status(200).json({ data: publicUsers })
+    return handleResponse(
+      res,
+      200,
+      req.t('User.public_users_retrieved_successfully'),
+      publicUsers
+    )
   } catch (error) {
     next(error)
   }
@@ -402,7 +407,12 @@ export const getPublicUserById = async (req: Request, res: Response, next: NextF
       quizzes: [],
       publicQuizzesCount: publicQuizzes.length,
     }
-    return res.status(200).json({ data: { user: publicUser, publicQuizzes } })
+    return handleResponse(
+      res,
+      200,
+      req.t('User.public_user_retrieved_successfully'),
+      { user: publicUser, publicQuizzes }
+    )
   } catch (error) {
     next(error)
   }
