@@ -129,7 +129,8 @@
     "only_quiz_owner_can_delete": "Only the owner of the quiz can delete the score.",
     "score_deleted_successfully": "Score deleted successfully.",
     "score_retrieved_successfully": "Score retrieved successfully.",
-    "scores_retrieved_successfully": "Scores retrieved successfully."
+    "scores_retrieved_successfully": "Scores retrieved successfully.",
+    "creator_cannot_submit_own_quiz": "You cannot submit your own quiz."
   },
   "Validation": {
     "RegisterValidation": {

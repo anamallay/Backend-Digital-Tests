@@ -43,6 +43,14 @@ export const submitQuiz = async (req: CustomRequest, res: Response, next: NextFu
       throw createHttpError(404, req.t('Score.quiz_not_found'))
     }
 
+    // The quiz creator can add their own quiz to their library (e.g. for
+    // preview), but submitting it would skew the examiner-dashboard stats
+    // with self-graded entries. Block the submission while leaving the
+    // library entry untouched.
+    if (quiz.user.toString() === userId.toString()) {
+      throw createHttpError(403, req.t('Score.creator_cannot_submit_own_quiz'))
+    }
+
     const questions = quiz.questions as unknown as IQuestion[]
 
     let correctAnswers = 0

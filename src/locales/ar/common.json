@@ -129,7 +129,8 @@
     "only_quiz_owner_can_delete": "فقط مالك الاختبار يمكنه حذف النتيجة.",
     "score_deleted_successfully": "تم حذف النتيجة بنجاح.",
     "score_retrieved_successfully": "تم استرجاع النتيجة بنجاح.",
-    "scores_retrieved_successfully": "تم استرجاع النتائج بنجاح."
+    "scores_retrieved_successfully": "تم استرجاع النتائج بنجاح.",
+    "creator_cannot_submit_own_quiz": "لا يمكنك تقديم اختبارك الخاص."
   },
   "Validation": {
     "RegisterValidation": {

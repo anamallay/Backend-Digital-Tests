@@ -7,6 +7,7 @@ import { CustomRequest } from '../types/usersType'
 import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
 import { dev } from '../config'
+import { QuizShareTokenPayload } from '../types/sharesTypes'
 
 // Shared populate config for the user's library. Every endpoint that
 // returns a library array must use this so the frontend slice never
@@ -133,8 +134,11 @@ export const addQuizToLibraryUsingToken = async (
       throw createHttpError(400, req.t('Library.token_required'))
     }
 
-    const decodedToken = jwt.verify(token, dev.app.jwtQuizSecretKey) as any
-    const { quizId, userId } = decodedToken
+    const decodedToken = jwt.verify(
+      token,
+      dev.app.jwtQuizSecretKey
+    ) as QuizShareTokenPayload
+    const { quizId } = decodedToken
 
     const currentUserId = req.userId
 
