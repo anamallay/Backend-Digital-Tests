@@ -9,13 +9,13 @@ const userSchema = new Schema<IUser>(
     },
     username: {
       type: String,
+      required: true,
       unique: true,
-      sparse: true,
       trim: true,
       lowercase: true,
       validate: {
         validator: function (value: string) {
-          return !value || (value.length >= 3 && value.length <= 30)
+          return value.length >= 3 && value.length <= 30
         },
         message: 'Username must be between 3 and 30 characters.',
       },
@@ -76,14 +76,5 @@ const userSchema = new Schema<IUser>(
     },
   }
 )
-
-// Pre-validate middleware to enforce presence of username or email
-userSchema.pre('validate', function (next) {
-  if (!this.username && !this.email) {
-    this.invalidate('username', 'Either username or email must be provided.')
-    this.invalidate('email', 'Either username or email must be provided.')
-  }
-  next()
-})
 
 export default mongoose.model<IUser>('User', userSchema)

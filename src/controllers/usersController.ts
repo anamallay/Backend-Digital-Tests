@@ -16,16 +16,22 @@ import { CustomRequest, UserTokenPayload } from '../types/usersType'
 export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { name, username, password } = req.body
-    const email = req.body.email.trim().toLowerCase()
+    const rawEmail: unknown = req.body.email
+    const email =
+      typeof rawEmail === 'string' && rawEmail.trim() !== ''
+        ? rawEmail.trim().toLowerCase()
+        : undefined
 
     const existingUserByUsername = await userSchema.findOne({ username })
     if (existingUserByUsername) {
       return handleResponse(res, 409, req.t('User.username_exists'))
     }
 
-    const existingUserByEmail = await userSchema.findOne({ email })
-    if (existingUserByEmail) {
-      return handleResponse(res, 409, req.t('User.email_exists'))
+    if (email) {
+      const existingUserByEmail = await userSchema.findOne({ email })
+      if (existingUserByEmail) {
+        return handleResponse(res, 409, req.t('User.email_exists'))
+      }
     }
 
     const hashedPassword = await bcrypt.hash(password, dev.app.bcryptCost)
@@ -33,7 +39,7 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
     const newUser = new userSchema({
       name,
       username,
-      email,
+      ...(email ? { email } : {}),
       password: hashedPassword,
       // EMAIL_DISABLED: Uncomment when a real email provider is configured
       // active: false,
@@ -218,7 +224,7 @@ export const getUserById = async (req: CustomRequest, res: Response, next: NextF
 // Update User
 export const updateUser = async (req: CustomRequest, res: Response, next: NextFunction) => {
   try {
-    const { name, username, email } = req.body
+    const { name, username } = req.body
 
     const user = await userSchema.findById(req.userId)
     if (!user) {
@@ -235,12 +241,21 @@ export const updateUser = async (req: CustomRequest, res: Response, next: NextFu
       user.username = username
     }
 
-    if (email && email !== user.email) {
-      const existingUserByEmail = await userSchema.findOne({ email })
-      if (existingUserByEmail && existingUserByEmail._id.toString() !== req.userId) {
-        return handleResponse(res, 409, req.t('User.email_exists'))
-      }
-      user.email = email
+    // Email is optional. Distinguish three cases by inspecting req.body:
+    //   - key absent           → don't touch
+    //   - key present, empty   → clear the field (mongoose unsets on save)
+    //   - key present, value   → validate uniqueness, assign
+    if ('email' in req.body) {
+      const raw = req.body.email
+      const trimmed = typeof raw === 'string' ? raw.trim().toLowerCase() : ''
+      if (trimmed === '') {
+        user.email = undefined
+      } else if (trimmed !== user.email) {
+        const existingUserByEmail = await userSchema.findOne({ email: trimmed })
+        if (existingUserByEmail && existingUserByEmail._id.toString() !== req.userId) {
+          return handleResponse(res, 409, req.t('User.email_exists'))
+        }
+        user.email = trimmed
       // EMAIL_DISABLED: with email features off, do not deactivate on email
       // change (the user would have no way to re-activate). Re-enable both the
       // deactivation and the re-verification email below when a real email
@@ -277,6 +292,7 @@ export const updateUser = async (req: CustomRequest, res: Response, next: NextFu
       // } catch (error) {
       //   return handleResponse(res, 500, req.t('User.email_sending_failed'))
       // }
+      }
     }
 
     await user.save()

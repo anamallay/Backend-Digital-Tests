@@ -34,6 +34,7 @@
     "reset_password_subject": "Reset your password",
     "check_email_reset_password": "Please check your email to reset your password.",
     "email_features_disabled": "Email features are disabled on this demo deployment. Please contact the site owner if you need a password reset.",
+    "no_email_on_file": "This account has no email on file. Please add one to your profile, or contact support to reset your password.",
     "password_length": "Password must be at least 6 characters.",
     "invalid_or_expired_token": "Invalid or expired token.",
     "invalid_token_or_user_not_found": "Invalid token or user not found.",
@@ -135,11 +136,9 @@
       "username_missing": "Username is required.",
       "username_length": "Username must be at least 3 characters and no more than 30 characters.",
       "username_format": "Username can only contain letters, numbers, and underscores.",
-      "email_missing": "Email is required.",
       "invalid_email": "Invalid email address.",
       "password_missing": "Password is required.",
-      "password_length": "Password must be at least 6 characters and no more than 50 characters.",
-      "email_or_username_required": "Either email or username must be provided."
+      "password_length": "Password must be at least 6 characters and no more than 50 characters."
     }
   },
   "Errors": {

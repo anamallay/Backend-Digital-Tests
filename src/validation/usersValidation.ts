@@ -18,10 +18,8 @@ export const registerValidation = [
     .withMessage((_, { req }) => req.t('Validation.RegisterValidation.username_format')),
 
   check('email')
+    .optional({ checkFalsy: true })
     .trim()
-    .notEmpty()
-    .withMessage((_, { req }) => req.t('Validation.RegisterValidation.email_missing'))
-    .bail()
     .isEmail()
     .withMessage((_, { req }) => req.t('Validation.RegisterValidation.invalid_email'))
     .normalizeEmail(),

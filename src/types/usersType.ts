@@ -4,7 +4,7 @@ import { Request } from 'express'
 export interface IUser extends Document {
   _id: Types.ObjectId
   name: string
-  email: string
+  email?: string
   username: string
   password: string
   active: boolean

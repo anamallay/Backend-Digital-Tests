@@ -68,7 +68,11 @@ export const forgetPassword = async (req: Request, res: Response, next: NextFunc
     //
     // // Anti-enumeration: a non-existent or inactive email returns the same
     // // 200 + message as the success path. Only actually send the email when
-    // // the account exists and is active.
+    // // the account exists and is active. (Emailless accounts are likewise
+    // // unfindable here — `findOne({ email })` won't match a user whose
+    // // email field is unset, which falls through to the same 200 response.
+    // // If this endpoint is ever extended to look up by username too, surface
+    // // `Auth.no_email_on_file` when the matched user has no email.)
     // const user = await User.findOne({ email })
     //
     // if (user && user.active) {
