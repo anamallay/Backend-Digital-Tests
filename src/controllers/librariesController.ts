@@ -16,7 +16,7 @@ import { QuizShareTokenPayload } from '../types/sharesTypes'
 // through this.
 const populateLibraryConfig = {
   path: 'library',
-  populate: [{ path: 'user', select: 'name email' }],
+  populate: [{ path: 'user', select: 'name email username' }],
 }
 
 // After a library write, refetch the user with the canonical populate so
